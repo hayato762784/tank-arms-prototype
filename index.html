@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>TANK ARMS V0.3</title>
+<title>TANK ARMS V0.4</title>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Chakra+Petch:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -97,6 +97,86 @@ input[type=range]{flex:1;accent-color:var(--amber);height:22px;}
   #matchInfo{top:5px;font-size:9px}#turnbanner{top:4px;right:45px;font-size:10px;padding:4px 5px;max-width:48%}
   #controls{padding:5px 7px calc(5px + env(safe-area-inset-bottom,0px))}.btn{padding:8px 4px}.ammoBtn{padding:5px 7px}
   .slotConfig select{font-size:11px}.buildLine select{flex-basis:46%}}
+/* V0.4: keep the battlefield tall on a phone held sideways. */
+:root{padding:0}
+#gameCanvas{min-height:0;flex:1 1 auto}
+#controls{flex:0 0 auto;gap:4px;padding:4px max(8px,env(safe-area-inset-right,0px)) calc(4px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left,0px))}
+#ammoRow{min-height:28px;align-items:center;scrollbar-width:thin;scrollbar-color:#766b50 transparent}
+.ammoBtn{padding:5px 8px;min-height:27px}
+#aimControls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.aimRow{min-width:0;display:grid;grid-template-columns:32px 104px 32px minmax(60px,1fr);gap:4px;align-items:center;height:34px}
+.aimRow label{font-size:10px;white-space:nowrap;color:var(--khaki);display:flex;align-items:center;justify-content:space-between;gap:4px}
+.aimRow .val{font-size:16px;color:#f5c176;font-weight:700;display:inline-block;width:42px;text-align:right;transition:color .16s,transform .16s}
+.aimRow .val.changed{color:#fff3af;transform:scale(1.15)}
+.nudge{height:32px;min-width:32px;border:1px solid #85754c;border-radius:5px;background:#343126;color:#f7e5c5;font-size:13px;font-weight:700;touch-action:none;user-select:none;-webkit-user-select:none;padding:0}
+.nudge:active{background:#6c5633}.nudge:disabled{opacity:.35}
+.aimRow input[type=range]{-webkit-appearance:none;appearance:none;width:100%;min-width:0;height:34px;margin:0;touch-action:none;background:transparent;cursor:pointer}
+.aimRow input[type=range]::-webkit-slider-runnable-track{height:7px;background:#806944;border-radius:5px}
+.aimRow input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:25px;height:25px;border-radius:50%;border:3px solid #fff3d5;background:#e6a246;box-shadow:0 0 0 2px #3f311b}
+.aimRow input[type=range]::-webkit-slider-thumb{margin-top:-9px}
+.aimRow input[type=range]::-moz-range-track{height:7px;background:#806944;border-radius:5px}
+.aimRow input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;border:3px solid #fff3d5;background:#e6a246}
+#bottomControls{display:flex;gap:8px;align-items:stretch;min-height:43px}
+#btnRow{flex:1 1 53%;min-width:0;display:flex;gap:5px}
+#btnRow .btn{min-height:43px;padding:4px 5px;font-size:13px}
+#btnRow #leftBtn,#btnRow #rightBtn{flex:1 1 0}
+#btnRow #fireBtn{flex:1.35 1 0;margin:0 5px;border-color:#dc6650}
+#statusPanel{flex:1 1 47%;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:2px}
+#activeInfo{font-size:11px;line-height:1.1}
+#moveLabel{white-space:nowrap}
+#weaponLabel{flex:1;min-width:0}
+#moveBar{height:9px;flex:none;box-shadow:0 0 0 1px #5d4b2d}
+#moveBar.moving #moveBarFill{filter:brightness(1.35);box-shadow:0 0 8px #e7a957}
+#specialLabel{font-size:10px;line-height:1.1}
+#orientationHint{display:none;position:absolute;top:92px;left:50%;transform:translateX(-50%);z-index:9;pointer-events:none;white-space:nowrap;padding:7px 12px;border-radius:6px;background:#172023e8;color:#ffe2a4;font-size:12px}
+@keyframes orientationNote{0%,55%{opacity:1}100%{opacity:0}}
+@media(orientation:portrait) and (max-width:650px){
+  #orientationHint{display:block;animation:orientationNote 6s forwards}
+  #matchInfo{top:calc(5px + env(safe-area-inset-top,0px))}
+  #turnbanner{top:calc(4px + env(safe-area-inset-top,0px))}
+  #hud{top:calc(34px + env(safe-area-inset-top,0px))}
+  #aimControls{grid-template-columns:1fr;gap:2px}
+  .aimRow{grid-template-columns:36px 110px 36px minmax(65px,1fr);height:40px}
+  .nudge{height:38px;min-width:36px}
+  .aimRow input[type=range]{height:40px}
+  #bottomControls{flex-direction:column-reverse;gap:5px}
+  #statusPanel{flex:0 0 auto}
+  #hud{padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
+}
+@media(orientation:landscape){
+  #hud{top:33px;left:max(8px,env(safe-area-inset-left,0px));right:max(8px,env(safe-area-inset-right,0px));gap:3px;flex-wrap:nowrap}
+  .hpcard{max-width:none;min-width:0;flex:1 1 0;padding:2px 4px}
+  .hpcard .nm{font-size:10px;overflow:hidden}
+  .hpcard .nm small{font-size:9px;white-space:nowrap}
+  .hpcard .tiny{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #matchInfo{left:max(8px,env(safe-area-inset-left,0px));max-width:54%;white-space:nowrap;overflow:hidden}
+  #turnbanner{max-width:37%;right:calc(max(8px,env(safe-area-inset-right,0px)) + 37px)}
+  #overlay{gap:5px;padding:calc(6px + env(safe-area-inset-top,0px)) max(12px,env(safe-area-inset-right,0px)) calc(8px + env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px))}
+  #overlay h1{font-size:22px}#overlay p{line-height:1.2;font-size:11px}
+  #slotPick{gap:3px}.slotConfig{padding:4px 6px}.slotHead{gap:3px}
+  #passScreen{padding:8px max(16px,env(safe-area-inset-right,0px)) 8px max(16px,env(safe-area-inset-left,0px))}
+  #passScreen h1{font-size:25px}#passScreen .pick{min-height:40px}
+}
+@media(orientation:landscape) and (max-height:420px){
+  #controls{gap:2px;padding-top:2px;padding-bottom:calc(2px + env(safe-area-inset-bottom,0px))}
+  #ammoRow{min-height:26px}.ammoBtn{min-height:25px;padding:3px 7px}
+  .aimRow{height:32px}.aimRow input[type=range]{height:32px}
+  #bottomControls{min-height:39px}#btnRow .btn{min-height:39px}
+  #statusPanel{gap:1px}#moveBar{height:7px}
+}
+@media(orientation:landscape) and (max-width:700px){
+  #aimControls{gap:4px}.aimRow{grid-template-columns:31px 89px 31px minmax(52px,1fr);gap:3px}
+  .aimRow label{font-size:9px}.aimRow .val{font-size:14px;width:33px}
+  .nudge{min-width:31px}
+  #btnRow #fireBtn{margin:0 2px}
+  #activeInfo{font-size:9px}#specialLabel{font-size:9px}
+}
+@media(orientation:landscape) and (max-height:340px){
+  #controls{gap:1px;padding-top:1px;padding-bottom:calc(1px + env(safe-area-inset-bottom,0px))}
+  #ammoRow{min-height:23px}.ammoBtn{min-height:22px;padding:2px 6px;font-size:10px}
+  .aimRow{height:29px}.nudge{height:29px}.aimRow input[type=range]{height:29px}
+  #bottomControls{min-height:36px}#btnRow .btn{min-height:36px}
+}
 </style>
 </head>
 <body>
@@ -109,20 +189,20 @@ input[type=range]{flex:1;accent-color:var(--amber);height:22px;}
 
   <div id="controls">
     <div id="ammoRow"></div>
-    <div class="row"><label>角度</label><input type="range" id="angle" min="0" max="180" value="45"><span class="val" id="angleVal">45°</span></div>
-    <div class="row"><label>威力</label><input type="range" id="power" min="10" max="100" value="55"><span class="val" id="powerVal">55</span></div>
-    <div id="btnRow">
-      <button class="btn" id="leftBtn">◀ 移動</button>
-      <button class="btn" id="rightBtn">移動 ▶</button>
-      <button class="btn" id="fireBtn">発射</button>
+    <div id="aimControls">
+      <div class="aimRow" id="angleRow"><button class="nudge" id="angleDown" aria-label="角度を1度下げる">−1</button><label for="angle">ANGLE <span class="val" id="angleVal">45°</span></label><button class="nudge" id="angleUp" aria-label="角度を1度上げる">+1</button><input type="range" id="angle" min="0" max="180" step="1" value="45" aria-label="角度"></div>
+      <div class="aimRow" id="powerRow"><button class="nudge" id="powerDown" aria-label="威力を1下げる">−1</button><label for="power">POWER <span class="val" id="powerVal">55</span></label><button class="nudge" id="powerUp" aria-label="威力を1上げる">+1</button><input type="range" id="power" min="10" max="100" step="1" value="55" aria-label="威力"></div>
     </div>
-    <div id="activeInfo"><span id="moveLabel"></span><span id="weaponLabel"></span></div>
-    <div id="moveBar" role="progressbar" aria-label="MOVE残量" aria-valuemin="0"><div id="moveBarFill"></div></div>
-    <div id="specialLabel"></div><button id="steerBtn" class="btn" style="display:none">偏向：飛行中の弾道を1回補正</button>
+    <div id="bottomControls">
+      <div id="btnRow"><button class="btn" id="leftBtn">◀ MOVE</button><button class="btn" id="fireBtn">発射</button><button class="btn" id="rightBtn">MOVE ▶</button></div>
+      <div id="statusPanel"><div id="activeInfo"><span id="moveLabel"></span><span id="weaponLabel"></span></div><div id="moveBar" role="progressbar" aria-label="MOVE残量" aria-valuemin="0"><div id="moveBarFill"></div></div><div id="specialLabel"></div></div>
+    </div>
+    <button id="steerBtn" class="btn" style="display:none">偏向：飛行中の弾道を1回補正</button>
   </div>
+  <div id="orientationHint" aria-live="polite">横画面でのプレイをおすすめします ↻</div>
 
   <div id="overlay">
-    <div id="title" style="font-size:30px;color:var(--amber);">TANK ARMS</div>
+    <div id="title" style="font-size:30px;color:var(--amber);">TANK ARMS V0.4</div>
     <p>2～4人のターン制バトル。各キャラの操作方法・タイプ・特殊矢4種を選んで出撃！</p>
     <div class="setupGroup">
       <div class="lbl">参加人数</div>
@@ -271,7 +351,7 @@ let players=[],curIdx=-1,phase='setup',projectiles=[],particles=[],camShake=0,it
 let camera={zoom:1,focusX:0,focusY:0,impactHold:0,impactX:0,impactY:0};
 let chosenCount=3,setupSlots=[],roundNo=0,roundOrder=[],orderCursor=-1,shotSerial=0,shotHits=new Map(),wind=0,windEnabled=true,mapName='',flightFrames=0;
 let controlsEnabled=false,holdLeft=false,holdRight=false;
-let matchToken=0;
+let matchToken=0,pendingResize=false;
 
 // Terrain remains a height field, like V0.1. Generated mounds and blast craters alter the same array.
 function genTerrain(){
@@ -327,7 +407,7 @@ function initPlayers(){
       isCPU:slot.controller==='CPU',tie:ties.indexOf(i),x,y:terrY(x)-stats.size,size:stats.size,
       maxHp:stats.hp,hp:stats.hp,baseSpd:stats.spd,moveMax:stats.move,moveBudget:stats.move,
       maxCost:stats.cost,loadout:[...slot.loadout],ammoCounts:{},ammo:'normal',angle:i<chosenCount/2?55:125,
-      power:55,special:0,state:'alive',revive:0,vx:0,vy:0,fallFrom:null,
+      power:55,special:0,state:'alive',revive:0,vx:0,vy:0,fallFrom:null,moveLean:0,moveSteps:0,
       speedBonus:0,speedExpires:0,steerAvailable:false,stats:{shots:0,hits:0,dealt:0,taken:0,revives:0}};
     p.loadout.forEach(id=>p.ammoCounts[id]=shotDef(id).ammo);
     players.push(p);
@@ -346,12 +426,13 @@ function renderHUD(){
     h.appendChild(card);
   });
   const order=roundOrder.slice(Math.max(0,orderCursor)).map(id=>`P${id+1}`).join(' › ');
-  byId('roundInfo').textContent=`ROUND ${roundNo} · ${mapName} · ${order||'判定中'}`;
+  byId('roundInfo').textContent=`ROUND ${roundNo} · ${order||'判定中'}`;
   byId('windInfo').textContent=wind===0?(windEnabled?'WIND 0':'WIND OFF'):`WIND ${wind<0?'←':'→'} ${Math.abs(wind)}`;
 }
 function setBanner(t){byId('turnbanner').textContent=t;}
 function drawTank(p){
   ctx.save();ctx.translate(p.x,p.y);ctx.fillStyle=p.color;
+  if(p.state==='alive'&&p.moveLean){ctx.rotate(p.moveLean);p.moveLean*=.81;if(Math.abs(p.moveLean)<.002)p.moveLean=0;}
   if(p.state==='ghost'){
     ctx.globalAlpha=.75;ctx.strokeStyle=p.color;ctx.lineWidth=2;
     ctx.beginPath();ctx.arc(0,0,p.size,0,Math.PI*2);ctx.stroke();
@@ -677,6 +758,7 @@ function beginRound(){
 }
 function nextTurn(){
   holdLeft=holdRight=false;stopMoveHum();if(checkGameOver())return;
+  if(pendingResize){resizeWorld();pendingResize=false;}
   camera.zoom=1;camera.focusX=W/2;camera.focusY=H/2;camera.impactHold=0;
   if(orderCursor+1>=roundOrder.length)beginRound();
   curIdx=roundOrder[++orderCursor];const p=players[curIdx];
@@ -748,13 +830,21 @@ function moveOneStep(p,dir,step=TUNE.move.pxPerFrame){
   let cost=step*(slope>TUNE.move.steep?TUNE.move.steepCost:slope>TUNE.move.gentle?TUNE.move.gentleCost:1);
   if(p.character==='mobile')cost*=TUNE.move.mobileMultiplier;
   if(cost>p.moveBudget+1e-5)return false;
-  p.x=nx;p.y=groundY(p);p.moveBudget-=cost;updateMoveBar(p);collectItems();return true;
+  p.x=nx;p.y=groundY(p);p.moveBudget-=cost;
+  p.moveLean=clamp((newY-oldY)*dir*.055,-.15,.15)+(p.moveSteps%2===0?.027:-.027);
+  p.moveSteps++;
+  if(p.moveSteps%3===0){
+    particles.push({x:p.x-dir*p.size*.65,y:p.y+3,vx:-dir*(.45+Math.random()*.4),vy:-.45-Math.random()*.45,
+      life:14,maxLife:14,r:1.6+Math.random()*1.6,color:'#b4a383'});
+  }
+  if(!p.isCPU&&phase==='aim')byId('moveBar').classList.add('moving');
+  updateMoveBar(p);collectItems();return true;
 }
 function updateMovement(){
   const p=players[curIdx];if(phase!=='aim'||!p||p.isCPU||p.state!=='alive'){stopMoveHum();return;}
   const dir=holdLeft&&!holdRight?-1:holdRight&&!holdLeft?1:0;
-  if(dir&&!moveOneStep(p,dir)){holdLeft=holdRight=false;stopMoveHum();}
-  else if(!dir)stopMoveHum();
+  if(dir&&!moveOneStep(p,dir)){holdLeft=holdRight=false;stopMoveHum();byId('moveBar').classList.remove('moving');}
+  else if(!dir){stopMoveHum();byId('moveBar').classList.remove('moving');}
 }
 function updateMoveBar(p){
   const percent=p.state==='ghost'?0:clamp(100*p.moveBudget/p.moveMax,0,100);
@@ -796,7 +886,8 @@ function syncControls(p){
 }
 function setControlsEnabled(en){
   controlsEnabled=en;
-  ['leftBtn','rightBtn','fireBtn','angle','power'].forEach(id=>byId(id).disabled=!en||(players[curIdx]?.state==='ghost'&&(id==='leftBtn'||id==='rightBtn')));
+  ['leftBtn','rightBtn','fireBtn','angle','power','angleDown','angleUp','powerDown','powerUp'].forEach(id=>byId(id).disabled=!en||(players[curIdx]?.state==='ghost'&&(id==='leftBtn'||id==='rightBtn')));
+  if(!en)byId('moveBar').classList.remove('moving');
   refreshAmmoButtons();
 }
 function tickParticles(){
@@ -813,6 +904,7 @@ function loop(){
   requestAnimationFrame(loop);
 }
 function showOverlayResult(winner){
+  if(pendingResize){resizeWorld();pendingResize=false;}
   const ov=byId('overlay');ov.style.display='flex';
   const summary=players.map(p=>`<tr><td>P${p.id+1} ${CHARACTER[p.character].name}</td><td>${p.stats.shots}</td><td>${p.stats.hits}</td><td>${p.stats.dealt}</td><td>${p.stats.taken}</td><td>${p.stats.revives}</td></tr>`).join('');
   ov.innerHTML=`<h1>${winner?winner.name+' の勝利！':'引き分け'}</h1><p>ROUND ${roundNo} で決着。設定を変えて何度でも再戦できるよ。</p><div class="statsScroll"><table class="statsTable"><thead><tr><th>キャラ</th><th>発射</th><th>命中</th><th>与ダメ</th><th>被ダメ</th><th>復帰</th></tr></thead><tbody>${summary}</tbody></table></div><button id="restartBtn" class="pick sel">設定に戻る</button><button id="sameBtn" class="pick">同じ構築で再戦</button>`;
@@ -864,7 +956,7 @@ function validateSetup(){
   byId('setupError').textContent=invalid?'各キャラの特殊矢を重複なしで4種類、COST上限以内にしてね。':'';
 }
 function startGame(){
-  matchToken++;resize();genTerrain();
+  matchToken++;pendingResize=false;resize();genTerrain();
   setupSlots.slice(0,chosenCount).forEach(s=>s.loadout=validateLoadout(s).arr);
   players=[];initPlayers();projectiles=[];particles=[];items=[];curIdx=-1;roundNo=0;roundOrder=[];orderCursor=-1;shotSerial=0;shotHits.clear();
   windEnabled=byId('windToggle').checked;wind=windEnabled?Math.floor(Math.random()*7)-3:0;
@@ -885,18 +977,42 @@ byId('startBtn').onclick=()=>{
 };
 byId('readyBtn').onclick=()=>{byId('passScreen').style.display='none';phase='aim';setControlsEnabled(true);ensureAudio();};
 byId('steerBtn').onclick=steerSpecial;
-byId('angle').oninput=e=>{const p=players[curIdx];if(!p||phase!=='aim'||p.isCPU)return;p.angle=+e.target.value;byId('angleVal').textContent=p.angle+'°';};
-byId('power').oninput=e=>{const p=players[curIdx];if(!p||phase!=='aim'||p.isCPU)return;p.power=+e.target.value;byId('powerVal').textContent=p.power;};
+function setAimValue(kind,value,feedback=false){
+  const p=players[curIdx];if(!p||phase!=='aim'||p.isCPU||!controlsEnabled)return false;
+  const slider=byId(kind),next=clamp(Math.round(value),Number(slider.min),Number(slider.max));
+  if(next===p[kind])return false;
+  p[kind]=next;slider.value=next;
+  const val=byId(kind+'Val');val.textContent=kind==='angle'?next+'°':String(next);
+  val.classList.remove('changed');void val.offsetWidth;val.classList.add('changed');
+  clearTimeout(val.flashTimer);val.flashTimer=setTimeout(()=>val.classList.remove('changed'),160);
+  if(feedback){ensureAudio();sfxClick();}return true;
+}
+byId('angle').oninput=e=>setAimValue('angle',+e.target.value);
+byId('power').oninput=e=>setAimValue('power',+e.target.value);
+function bindNudge(id,kind,step){
+  const el=byId(id);let delay=null,repeater=null;
+  const stop=()=>{clearTimeout(delay);clearInterval(repeater);delay=repeater=null;};
+  el.addEventListener('pointerdown',e=>{
+    if(el.disabled)return;
+    e.preventDefault();setAimValue(kind,players[curIdx]?.[kind]+step,true);
+    if(el.setPointerCapture)el.setPointerCapture(e.pointerId);
+    stop();delay=setTimeout(()=>{repeater=setInterval(()=>setAimValue(kind,players[curIdx]?.[kind]+step,true),190);},360);
+  });
+  ['pointerup','pointercancel','lostpointercapture'].forEach(ev=>el.addEventListener(ev,stop));
+  el.onclick=e=>{if(e.detail===0)setAimValue(kind,players[curIdx]?.[kind]+step,true);};
+}
+bindNudge('angleDown','angle',-1);bindNudge('angleUp','angle',1);
+bindNudge('powerDown','power',-1);bindNudge('powerUp','power',1);
 byId('fireBtn').onclick=()=>{const p=players[curIdx];if(phase==='aim'&&!p.isCPU){ensureAudio();fire(p);}};
 function bindHold(id,setter){
   const el=byId(id);el.addEventListener('pointerdown',e=>{e.preventDefault();const p=players[curIdx];if(!p||p.isCPU||p.state==='ghost'||phase!=='aim')return;setter(true);ensureAudio();startMoveHum();});
-  for(const ev of ['pointerup','pointerleave','pointercancel'])el.addEventListener(ev,()=>{setter(false);if(!holdLeft&&!holdRight)stopMoveHum();});
+  for(const ev of ['pointerup','pointerleave','pointercancel'])el.addEventListener(ev,()=>{setter(false);if(!holdLeft&&!holdRight){stopMoveHum();byId('moveBar').classList.remove('moving');}});
 }
 bindHold('leftBtn',v=>holdLeft=v);bindHold('rightBtn',v=>holdRight=v);
 byId('muteBtn').onclick=()=>{muted=!muted;byId('muteBtn').textContent=muted?'🔇':'🔊';if(muted)stopMoveHum();try{localStorage.setItem('tankarms_muted',muted?'1':'0');}catch(e){}};
 try{muted=localStorage.getItem('tankarms_muted')==='1';}catch(e){}
 if(muted)byId('muteBtn').textContent='🔇';
-window.addEventListener('resize',()=>{
+function resizeWorld(){
   const oldW=W,oldH=H,oldTerrain=terrain;resize();
   if(phase==='setup'||!oldTerrain?.length||!oldW||!oldH){genTerrain();return;}
   terrain=Array.from({length:W},(_,x)=>clamp(oldTerrain[clamp(Math.round(x*oldW/W),0,oldW-1)]*H/oldH,0,H+35));
@@ -904,6 +1020,11 @@ window.addEventListener('resize',()=>{
   camera.focusX*=W/oldW;camera.focusY*=H/oldH;camera.impactX*=W/oldW;camera.impactY*=H/oldH;
   items.forEach(it=>{it.x*=W/oldW;it.y*=H/oldH;});
   projectiles.forEach(pr=>{pr.x*=W/oldW;pr.y*=H/oldH;});
+}
+window.addEventListener('resize',()=>{
+  // Safari bars and rotation can resize during a shot; postpone world rescaling until it lands.
+  if(phase==='flight'||phase==='resolve'){pendingResize=true;return;}
+  resizeWorld();
 });
 for(let i=0;i<4;i++)ensureSlot(i);
 buildSetup();resize();genTerrain();camera.focusX=W/2;camera.focusY=H/2;draw();byId('runtimeHint').style.display='none';requestAnimationFrame(loop);
