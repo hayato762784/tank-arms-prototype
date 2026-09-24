@@ -1,0 +1,10 @@
+{
+  "name": "TANK ARMS Prototype V0.4.1 改訂",
+  "short_name": "TANK ARMS",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "landscape",
+  "background_color": "#0c0d09",
+  "theme_color": "#1a1c16"
+}
